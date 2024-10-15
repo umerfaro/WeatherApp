@@ -2,6 +2,10 @@
 
 This project is a **Weather Dashboard** web application that allows users to check the current weather, view a 5-day forecast, visualize weather trends in charts, and interact with a chatbot for basic weather queries. The app uses the **OpenWeather API** to fetch real-time weather data for cities entered by the user or based on their geolocation.
 
+## Demo
+
+You can see a live demo of the Weather Dashboard by clicking [here](https://weather-app-eight-steel-61.vercel.app).
+
 ## Features
 
 - **Weather Data by City or Location**: Users can search for weather by city name or allow geolocation to fetch data automatically.
