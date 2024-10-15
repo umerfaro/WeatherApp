@@ -9,56 +9,107 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Dialogflow Messenger -->
   <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-  <!-- FontAwesome for icons -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <!-- AOS CDN for scroll animations -->
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+  <!-- FontAwesome for icons (optional if using Heroicons) -->
+  <!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
 
   <style>
+    /* Existing styles */
     .loader {
-      border-top-color: #3498db; /* Blue color */
+      border-top-color: #3498db;
       animation: spinner 1.5s linear infinite;
     }
     @keyframes spinner {
       to { transform: rotate(360deg); }
     }
-    /* Fading spinner */
     #loadingSpinner {
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
     }
-
     #loadingSpinner.show {
       opacity: 1;
+    }
+
+    /* Ensure the chatbot fits well on mobile */
+    df-messenger {
+      --df-messenger-bot-message: #4285f4;
+      --df-messenger-button-titlebar-color: #4285f4;
+      --df-messenger-chat-background-color: #fafafa;
+      --df-messenger-font-size: 14px;
+      z-index: 9999;
+    }
+    @media screen and (max-width: 768px) {
+      df-messenger {
+        --df-messenger-chat-height: 80vh;
+        --df-messenger-chat-width: 90vw;
+      }
+    }
+    /* Hamburger button styling */
+    #toggleSidebar {
+      cursor: pointer;
     }
   </style>
 </head>
 <body class="bg-gray-100">
-  <div class="flex min-h-screen">
+  <div class="flex flex-col md:flex-row min-h-screen">
     <!-- Sidebar -->
-    <aside class="w-64 bg-blue-700 text-white flex-shrink-0">
+    <aside class="w-full md:w-64 bg-blue-700 text-white flex-shrink-0 md:block hidden">
       <div class="p-6">
-        <h1 class="text-3xl font-bold mb-8"><i class="fas fa-cloud-sun"></i> Weather App</h1>
+        <h1 class="text-3xl font-bold mb-8">
+          <i class="fas fa-cloud-sun"></i> Weather App
+        </h1>
         <nav>
-          <a href="#weatherWidget" class="block py-2 text-lg hover:bg-blue-800 rounded px-4"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-          <a href="#forecastTable" class="block py-2 text-lg hover:bg-blue-800 rounded px-4"><i class="fas fa-table"></i> Tables</a>
+          <a href="#weatherWidget" class="block py-2 text-lg hover:bg-blue-800 rounded px-4">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+          </a>
+          <a href="#forecastTable" class="block py-2 text-lg hover:bg-blue-800 rounded px-4">
+            <i class="fas fa-table"></i> Tables
+          </a>
         </nav>
       </div>
     </aside>
 
-    <main class="flex-grow p-6 relative">
-        <!-- Loading Spinner -->
-        <div id="loadingSpinner" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 hidden">
-          <!-- Spinner -->
-          <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
-        </div>
-        
-        <!-- City Input and Unit Toggle -->
-        <div class="flex items-center mb-6">
-          <input type="text" id="cityInput" class="border p-2 rounded w-full max-w-sm" placeholder="Enter city name">
-          <button id="getWeatherBtn" class="bg-blue-600 text-white px-4 py-2 rounded ml-2 hover:bg-blue-700">Get Weather</button>
-          
+    <!-- Mobile Sidebar -->
+    <aside class="w-full bg-blue-700 text-white flex-shrink-0 block md:hidden">
+      <div class="p-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">
+          <i class="fas fa-cloud-sun"></i> Weather App
+        </h1>
+        <button id="toggleSidebar" class="text-white">
+          <!-- Use Heroicon for hamburger menu -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      <div id="mobileSidebar" class="hidden">
+        <nav>
+          <a href="#weatherWidget" class="block py-2 text-lg hover:bg-blue-800 rounded px-4">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+          </a>
+          <a href="#forecastTable" class="block py-2 text-lg hover:bg-blue-800 rounded px-4">
+            <i class="fas fa-table"></i> Tables
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="flex-grow p-4 md:p-6 relative">
+      <!-- Loading Spinner -->
+      <div id="loadingSpinner" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 hidden">
+        <!-- Spinner -->
+        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
+      </div>
+
+      <!-- City Input and Unit Toggle -->
+      <div class="flex flex-col md:flex-row items-center mb-6">
+        <input type="text" id="cityInput" class="border p-2 rounded w-full max-w-sm mb-4 md:mb-0" placeholder="Enter city name">
+        <div class="flex items-center">
+          <button id="getWeatherBtn" class="bg-blue-600 text-white px-4 py-2 rounded ml-0 md:ml-2 hover:bg-blue-700">Get Weather</button>
           <!-- Unit Toggle -->
           <label class="ml-4 mr-2">Unit:</label>
           <select id="unitToggle" class="border p-2 rounded">
@@ -66,6 +117,7 @@
             <option value="F">°F</option>
           </select>
         </div>
+      </div>
 
       <!-- Weather Widget -->
       <section id="weatherWidget" class="p-6 rounded-lg shadow mb-6 bg-cover bg-center text-white" 
@@ -74,7 +126,7 @@
       </section>
 
       <!-- Charts -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6" data-aos="fade-up">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6" data-aos="fade-up">
         <div class="bg-white p-4 rounded-lg shadow">
           <canvas id="barChart"></canvas>
         </div>
@@ -86,27 +138,17 @@
         </div>
       </div>
 
-
       <!-- Filter Controls -->
-
-  
-
-      <!-- Table -->
       <section class="mb-6 bg-white p-4 rounded-lg shadow" data-aos="fade-up">
-       
-        <!-- Filter Controls -->
-<div class="mb-4 flex flex-wrap gap-2 justify-center">
-    <button id="sortAscBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sort Ascending</button>
-    <button id="sortDescBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sort Descending</button>
-    <button id="filterRainBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Show Rainy Days</button>
-    <button id="highestTempBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Highest Temperature</button>
-    <button id="resetFiltersBtn" class="flex-1 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Reset Filters</button>
-  </div>
-  
+        <div class="mb-4 flex flex-wrap gap-2 justify-center">
+          <button id="sortAscBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sort Ascending</button>
+          <button id="sortDescBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sort Descending</button>
+          <button id="filterRainBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Show Rainy Days</button>
+          <button id="highestTempBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Highest Temperature</button>
+          <button id="resetFiltersBtn" class="flex-1 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Reset Filters</button>
+        </div>
 
-          
-
-       
+        <!-- Table -->
         <table id="forecastTable" class="min-w-full">
           <!-- Table content will be inserted here -->
         </table>
@@ -118,14 +160,14 @@
 
       <!-- Chatbot Widget -->
       <section id="chatbotWidget" class="p-6 rounded-lg shadow bg-white" data-aos="fade-up">
-        <!-- Chatbot interface -->
+        <h2 class="text-xl font-bold mb-4">Chat with us</h2>
         <df-messenger
-        id="dfMessenger"
-        intent="Welcome"
-        chat-title="weatherbot"
-        agent-id="44a950ce-63f8-4813-9077-be36169315aa"
-        language-code="en"
-          ></df-messenger>
+          id="dfMessenger"
+          intent="Welcome"
+          chat-title="weatherbot"
+          agent-id="44a950ce-63f8-4813-9077-be36169315aa"
+          language-code="en"
+        ></df-messenger>
       </section>
     </main>
   </div>
@@ -137,6 +179,21 @@
       duration: 1000, // Animation duration (in milliseconds)
       easing: 'ease-in-out', // Animation easing
       once: true, // Animation happens only once as you scroll
+    });
+
+    // Toggle sidebar in mobile view
+    document.getElementById('toggleSidebar').addEventListener('click', function () {
+      const sidebar = document.getElementById('mobileSidebar');
+      sidebar.classList.toggle('hidden');
+    });
+
+    // Close sidebar when a menu item is clicked in mobile view
+    const mobileMenuLinks = document.querySelectorAll('#mobileSidebar nav a');
+    mobileMenuLinks.forEach(link => {
+      link.addEventListener('click', function () {
+        const sidebar = document.getElementById('mobileSidebar');
+        sidebar.classList.add('hidden');
+      });
     });
   </script>
 </body>
