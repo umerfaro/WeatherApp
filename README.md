@@ -28,7 +28,7 @@ This project is a **Weather Dashboard** web application that allows users to che
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/weather-dashboard.git
+git clone https://github.com/your-username/WeatherApp.git
 ```
 
 ## OpenWeather API Key
