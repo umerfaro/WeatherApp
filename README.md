@@ -65,6 +65,21 @@ The chatbot is powered by Dialogflow. If you want to modify the chatbot response
 
 ```
 
+## Run Locally
+
+To run the project locally, follow these steps:
+
+1. **Navigate to the Project Directory:**
+   - Open your terminal or file explorer and navigate to the directory where you have cloned or downloaded the project.
+
+2. **Open the `index.html` File:**
+   - You can open the `index.html` file using any browser. There are two ways to do this:
+     - **Double-click** on the `index.html` file, which will automatically open it in your default web browser.
+     - Alternatively, you can **right-click** on the file and select **Open with** to choose a specific browser.
+
+Once the file is opened in the browser, the Weather Dashboard web app will load and be fully functional.
+
+
 ## Forecast Table
 A table showing the 5-day weather forecast with filters for sorting and showing specific conditions (e.g., rainy days or highest temperature).
 
