@@ -13,7 +13,7 @@
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
   <!-- FontAwesome for icons (optional if using Heroicons) -->
-  <!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
   <style>
     /* Existing styles */
@@ -55,48 +55,50 @@
 <body class="bg-gray-100">
   <div class="flex flex-col md:flex-row min-h-screen">
     <!-- Sidebar -->
-    <aside class="w-full md:w-64 bg-blue-700 text-white flex-shrink-0 md:block hidden">
-      <div class="p-6">
-        <h1 class="text-3xl font-bold mb-8">
-          <i class="fas fa-cloud-sun"></i> Weather App
-        </h1>
-        <nav>
-          <a href="#weatherWidget" class="block py-2 text-lg hover:bg-blue-800 rounded px-4">
-            <i class="fas fa-tachometer-alt"></i> Dashboard
-          </a>
-          <a href="#forecastTable" class="block py-2 text-lg hover:bg-blue-800 rounded px-4">
-            <i class="fas fa-table"></i> Tables
-          </a>
-        </nav>
-      </div>
-    </aside>
+<aside class="w-full md:w-64 bg-gradient-to-b from-blue-800 to-blue-600 text-white flex-shrink-0 md:block hidden">
+  <div class="p-6">
+    <h1 class="text-3xl font-bold mb-8 flex items-center">
+      <i class="fas fa-cloud-sun mr-2 text-yellow-300"></i> Weather App
+    </h1>
+    <nav class="space-y-2">
+      <button id="dashboardNavBtn" class="flex items-center w-full py-2 px-4 text-lg rounded hover:bg-blue-700 transition duration-200">
+        <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
+      </button>
+      <button id="tablesNavBtn" class="flex items-center w-full py-2 px-4 text-lg rounded hover:bg-blue-700 transition duration-200">
+        <i class="fas fa-table mr-3"></i> Tables
+      </button>
+      
+    </nav>
+  </div>
+</aside>
+
 
     <!-- Mobile Sidebar -->
-    <aside class="w-full bg-blue-700 text-white flex-shrink-0 block md:hidden">
-      <div class="p-6 flex justify-between items-center">
-        <h1 class="text-2xl font-bold">
-          <i class="fas fa-cloud-sun"></i> Weather App
-        </h1>
-        <button id="toggleSidebar" class="text-white">
-          <!-- Use Heroicon for hamburger menu -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-      <div id="mobileSidebar" class="hidden">
-        <nav>
-          <a href="#weatherWidget" class="block py-2 text-lg hover:bg-blue-800 rounded px-4">
-            <i class="fas fa-tachometer-alt"></i> Dashboard
-          </a>
-          <a href="#forecastTable" class="block py-2 text-lg hover:bg-blue-800 rounded px-4">
-            <i class="fas fa-table"></i> Tables
-          </a>
-        </nav>
-      </div>
-    </aside>
+<aside class="w-full bg-blue-700 text-white flex-shrink-0 block md:hidden">
+  <div class="p-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">
+      <i class="fas fa-cloud-sun"></i> Weather App
+    </h1>
+    <button id="toggleSidebar" class="text-white">
+      <!-- Use Heroicon for hamburger menu -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+  <div id="mobileSidebar" class="hidden">
+    <nav>
+      <button id="mobileDashboardNavBtn" class="block py-2 text-lg hover:bg-blue-800 rounded px-4 w-full text-left">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </button>
+      <button id="mobileTablesNavBtn" class="block py-2 text-lg hover:bg-blue-800 rounded px-4 w-full text-left">
+        <i class="fas fa-table"></i> Tables
+      </button>
+    </nav>
+  </div>
+</aside>
 
     <main class="flex-grow p-4 md:p-6 relative">
       <!-- Loading Spinner -->
@@ -119,44 +121,50 @@
         </div>
       </div>
 
-      <!-- Weather Widget -->
-      <section id="weatherWidget" class="p-6 rounded-lg shadow mb-6 bg-cover bg-center text-white" 
-        style="background-image: url('default.jpg');" data-aos="fade-up">
-        <!-- Weather details will be displayed here -->
-      </section>
+      <!-- Weather Widget and Charts Section -->
+  <section id="dashboardSection" class="block" data-aos="fade-up">
+    <!-- Weather Widget -->
+    <div id="weatherWidget" class="p-6 rounded-lg shadow mb-6 bg-cover bg-center text-white" 
+      style="background-image: url('default.jpg');">
+      <!-- Weather details will be displayed here -->
+    </div>
 
-      <!-- Charts -->
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6" data-aos="fade-up">
-        <div class="bg-white p-4 rounded-lg shadow">
-          <canvas id="barChart"></canvas>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow">
-          <canvas id="doughnutChart"></canvas>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow">
-          <canvas id="lineChart"></canvas>
-        </div>
+    <!-- Charts -->
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6">
+      <div class="bg-white p-4 rounded-lg shadow">
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="bg-white p-4 rounded-lg shadow">
+        <canvas id="doughnutChart"></canvas>
+      </div>
+      <div class="bg-white p-4 rounded-lg shadow">
+        <canvas id="lineChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+      <!-- Table Section (Initially Hidden) -->
+  <section id="tableSection" class="hidden" data-aos="fade-up">
+    <!-- Filter Controls -->
+    <div class="mb-6 bg-white p-4 rounded-lg shadow">
+      <div class="mb-4 flex flex-wrap gap-2 justify-center">
+        <button id="sortAscBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sort Ascending</button>
+        <button id="sortDescBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sort Descending</button>
+        <button id="filterRainBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Show Rainy Days</button>
+        <button id="highestTempBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Highest Temperature</button>
+        <button id="resetFiltersBtn" class="flex-1 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Reset Filters</button>
       </div>
 
-      <!-- Filter Controls -->
-      <section class="mb-6 bg-white p-4 rounded-lg shadow" data-aos="fade-up">
-        <div class="mb-4 flex flex-wrap gap-2 justify-center">
-          <button id="sortAscBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sort Ascending</button>
-          <button id="sortDescBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sort Descending</button>
-          <button id="filterRainBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Show Rainy Days</button>
-          <button id="highestTempBtn" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Highest Temperature</button>
-          <button id="resetFiltersBtn" class="flex-1 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Reset Filters</button>
-        </div>
-
-        <!-- Table -->
-        <table id="forecastTable" class="min-w-full">
-          <!-- Table content will be inserted here -->
-        </table>
-        <!-- Pagination Controls -->
-        <div id="paginationControls" class="flex justify-center mt-4">
-          <!-- Pagination buttons will be here -->
-        </div>
-      </section>
+      <!-- Table -->
+      <table id="forecastTable" class="min-w-full">
+        <!-- Table content will be inserted here -->
+      </table>
+      <!-- Pagination Controls -->
+      <div id="paginationControls" class="flex justify-center mt-4">
+        <!-- Pagination buttons will be here -->
+      </div>
+    </div>
+  </section>
 
       <!-- Chatbot Widget -->
       <section id="chatbotWidget" class="p-6 rounded-lg shadow bg-white" data-aos="fade-up">
